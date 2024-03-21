@@ -2,6 +2,7 @@ const express = require('express');
 const authorapp = express.Router();
 const bcrytpjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const verifytoken = require('../Middlewares/verifyToke');
 authorapp.use(express.json());
 
 let authorCollection;
@@ -49,7 +50,7 @@ authorapp.post('/login', async (req, res) => {
     } else {
       //create token
       let singleToken = jwt.sign({ username: authCred.username }, 'abcedf', {
-        expiresIn: 30,
+        expiresIn: 120,
       });
       res.send({
         message: 'Login Successful',
@@ -61,7 +62,7 @@ authorapp.post('/login', async (req, res) => {
 });
 
 //post method for article
-authorapp.post('/article', async (req, res) => {
+authorapp.post('/article', verifytoken, async (req, res) => {
   const newArticle = req.body;
   await articlesCollection.insertOne(newArticle);
 
@@ -70,7 +71,7 @@ authorapp.post('/article', async (req, res) => {
 
 //get metahod to read articles
 
-authorapp.get('/article/:username', async (req, res) => {
+authorapp.get('/article/:username', verifytoken, async (req, res) => {
   let authName = req.params.username;
   let artList = await articlesCollection.find({ username: authName }).toArray();
 
@@ -78,29 +79,33 @@ authorapp.get('/article/:username', async (req, res) => {
 });
 
 //soft delete or change status of article
-authorapp.put('/article/:username/:articleId', async (req, res) => {
-  let artId = req.params.articleId;
-  let currentstatus = req.body.status;
+authorapp.put(
+  '/article/:username/:articleId',
+  verifytoken,
+  async (req, res) => {
+    let artId = req.params.articleId;
+    let currentstatus = req.body.status;
 
-  if (currentstatus === true) {
-    let removedArt = await articlesCollection.findOneAndUpdate(
-      { articleId: artId },
-      { $set: { status: true } },
-      { returnDocument: 'after' }
-    );
-    res.send({ message: 'Article true', payload: removedArt });
-  } else {
-    let removedArt = await articlesCollection.findOneAndUpdate(
-      { articleId: artId },
-      { $set: { status: false } },
-      { returnDocument: 'after' }
-    );
-    res.send({ message: 'Article false', payload: removedArt });
+    if (currentstatus === true) {
+      let removedArt = await articlesCollection.findOneAndUpdate(
+        { articleId: artId },
+        { $set: { status: true } },
+        { returnDocument: 'after' }
+      );
+      res.send({ message: 'Article true', payload: removedArt });
+    } else {
+      let removedArt = await articlesCollection.findOneAndUpdate(
+        { articleId: artId },
+        { $set: { status: false } },
+        { returnDocument: 'after' }
+      );
+      res.send({ message: 'Article false', payload: removedArt });
+    }
   }
-});
+);
 
 //article edit
-authorapp.put('/article', async (req, res) => {
+authorapp.put('/article', verifytoken, async (req, res) => {
   let modified = req.body;
   let artUpdate = await articlesCollection.findOneAndUpdate(
     { articleId: modified.articleId },

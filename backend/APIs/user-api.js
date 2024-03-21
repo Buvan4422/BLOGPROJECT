@@ -2,6 +2,8 @@ const express = require('express');
 const Userapp = express.Router();
 const bcrytpjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+const verifyToken = require('../Middlewares/verifyToke');
 Userapp.use(express.json());
 
 let userCollection;
@@ -47,7 +49,7 @@ Userapp.post('/login', async (req, res) => {
     } else {
       //create token
       let singleToken = jwt.sign({ username: userCred.username }, 'abcedf', {
-        expiresIn: 30,
+        expiresIn: 500,
       });
       res.send({
         message: 'Login Successful',
@@ -59,14 +61,14 @@ Userapp.post('/login', async (req, res) => {
 });
 
 //read all articles
-Userapp.get('/article', async (req, res) => {
+Userapp.get('/article', verifyToken, async (req, res) => {
   let artList = await articlesCollection.find({ status: true }).toArray();
-
+  console.log(artList);
   res.send({ message: 'Articles', payload: artList });
 });
 
 //add comment by user
-Userapp.put('/article/:articleId/comments', async (req, res) => {
+Userapp.put('/article/:articleId/comments', verifyToken, async (req, res) => {
   let comObj = req.body;
   let artId = req.params.articleId;
   let Commnted = await articlesCollection.findOneAndUpdate(
