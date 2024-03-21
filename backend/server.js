@@ -17,11 +17,11 @@ mongoClient
     const dbObj = client.db('blogapp');
     const userCollection = dbObj.collection('users');
     const authorCollection = dbObj.collection('authors');
-    const articlesColllection = dbObj.collection('articles');
+    const articlesCollection = dbObj.collection('articles');
 
     app.set('userCollection', userCollection);
     app.set('authorCollection', authorCollection);
-    app.set('articlesColllection', articlesColllection);
+    app.set('articlesCollection', articlesCollection);
   })
   .catch();
 

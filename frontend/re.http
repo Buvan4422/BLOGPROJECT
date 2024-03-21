@@ -21,7 +21,24 @@ Content-Type: application/json
     "username":"Jai12",
     "password":"Buvan@12"
 }
-###
+### post for article
+post http://localhost:4000/author-api/article
+Content-Type: application/json
+
+{
+    "articleId":"{{$timestamp}}",
+    "title":"JavaScript Basic",
+    "category":"Programming",
+    "content":"asdfgfghjkljhgfuygfvbnl;iuygnoiytsxcv;iuy sdfgkloiuygfdghjkl",
+    "dateofCreation": "{{$datetime iso8601}}",
+    "dateofModification": "{{$datetime iso8601}}",
+    "username":"Jai",
+    "comments":[],
+    "status":true
+}
+###read the articles
+get http://localhost:4000/author-api/article/Jai
+
 
 ####################################    USER   ##################################################
 ### get for user

@@ -5,8 +5,10 @@ const jwt = require('jsonwebtoken');
 authorapp.use(express.json());
 
 let authorCollection;
+let articlesCollection;
 authorapp.use((req, res, next) => {
   authorCollection = req.app.get('authorCollection');
+  articlesCollection = req.app.get('articlesCollection');
   next();
 });
 
@@ -16,7 +18,7 @@ authorapp.get('/authors', async (req, res) => {
   res.send({ message: 'your data', payload: authorsList });
 });
 
-//post method
+//post method for resgister
 authorapp.post('/register', async (req, res) => {
   let newAuthor = req.body;
   let dbAuthor = await authorCollection.findOne({
@@ -31,7 +33,7 @@ authorapp.post('/register', async (req, res) => {
   await authorCollection.insertOne(newAuthor);
   res.send({ message: 'New author  created' });
 });
-
+//post method for login
 authorapp.post('/login', async (req, res) => {
   //get authour credObj
   let authCred = req.body;
@@ -58,6 +60,19 @@ authorapp.post('/login', async (req, res) => {
   }
 });
 
-//put method
+//post method for article
+authorapp.post('/article', async (req, res) => {
+  const newArticle = req.body;
+  await articlesCollection.insertOne(newArticle);
 
+  res.send({ message: 'New Article added' });
+});
+//get metahod to read articles
+
+authorapp.get('/article/:username', async (req, res) => {
+  let authName = req.params.username;
+  let artList = await articlesCollection.find({ username: authName }).toArray();
+
+  res.send({ message: 'Articles', payload: artList });
+});
 module.exports = authorapp;
