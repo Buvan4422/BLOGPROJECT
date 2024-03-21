@@ -41,11 +41,27 @@ get http://localhost:4000/author-api/article/Jai
 
 ###delete an article by author
 put http://localhost:4000/author-api/article/Jai/1711000257
+Content-Type: application/json
 
+{
+    "status":true
+}
 
+### edit article by author
+put http://localhost:4000/author-api/article
+Content-Type: application/json
 
-
-
+{
+    "articleId":"1711000257",
+    "title":"JavaScript Basic Part-1",
+    "category":"Scripting",
+    "content":"We will we will rock you",
+    "dateofCreation": "2024-03-21T05:50:57.622Z",
+    "dateofModification": "{{$datetime iso8601}}",
+    "username":"Jai",
+    "comments":[],
+    "status":true
+}
 
 
 

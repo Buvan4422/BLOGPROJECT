@@ -69,6 +69,7 @@ authorapp.post('/article', async (req, res) => {
 });
 
 //get metahod to read articles
+
 authorapp.get('/article/:username', async (req, res) => {
   let authName = req.params.username;
   let artList = await articlesCollection.find({ username: authName }).toArray();
@@ -79,11 +80,35 @@ authorapp.get('/article/:username', async (req, res) => {
 //soft delete or change status of article
 authorapp.put('/article/:username/:articleId', async (req, res) => {
   let artId = req.params.articleId;
-  let removedArt = await articlesCollection.findOneAndUpdate(
-    { articleId: artId },
-    { $set: { status: false } },
+  let currentstatus = req.body.status;
+
+  if (currentstatus === true) {
+    let removedArt = await articlesCollection.findOneAndUpdate(
+      { articleId: artId },
+      { $set: { status: true } },
+      { returnDocument: 'after' }
+    );
+    res.send({ message: 'Article true', payload: removedArt });
+  } else {
+    let removedArt = await articlesCollection.findOneAndUpdate(
+      { articleId: artId },
+      { $set: { status: false } },
+      { returnDocument: 'after' }
+    );
+    res.send({ message: 'Article false', payload: removedArt });
+  }
+});
+
+//article edit
+
+authorapp.put('/article', async (req, res) => {
+  let modified = req.body;
+  let artUpdate = await articlesCollection.findOneAndUpdate(
+    { articleId: modified.articleId },
+    { $set: { ...modified } },
     { returnDocument: 'after' }
   );
-  res.send({ message: 'Article removed', payload: removedArt });
+
+  res.send({ message: 'Updated', payload: artUpdate });
 });
 module.exports = authorapp;
