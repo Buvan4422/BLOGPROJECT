@@ -65,4 +65,15 @@ Userapp.get('/article', async (req, res) => {
   res.send({ message: 'Articles', payload: artList });
 });
 
+//add comment by user
+Userapp.put('/article/:articleId/comments', async (req, res) => {
+  let comObj = req.body;
+  let artId = req.params.articleId;
+  let Commnted = await articlesCollection.findOneAndUpdate(
+    { articleId: artId },
+    { $addToSet: { comments: comObj } },
+    { returnDocument: 'after' }
+  );
+  res.send({ message: 'Coment posted', payload: Commnted });
+});
 module.exports = Userapp;

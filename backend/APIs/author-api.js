@@ -100,7 +100,6 @@ authorapp.put('/article/:username/:articleId', async (req, res) => {
 });
 
 //article edit
-
 authorapp.put('/article', async (req, res) => {
   let modified = req.body;
   let artUpdate = await articlesCollection.findOneAndUpdate(
@@ -111,4 +110,5 @@ authorapp.put('/article', async (req, res) => {
 
   res.send({ message: 'Updated', payload: artUpdate });
 });
+
 module.exports = authorapp;

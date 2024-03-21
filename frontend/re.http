@@ -99,3 +99,14 @@ Content-Type: application/json
 ###read all articles
 
 get http://localhost:4000/user-api/article
+
+
+###comments by users
+
+put http://localhost:4000/user-api/article/1711000257/comments
+Content-Type: application/json
+
+{
+    "username":"Jai12",
+    "comments":"The article was awsome"
+}
