@@ -39,6 +39,19 @@ Content-Type: application/json
 ###read the articles
 get http://localhost:4000/author-api/article/Jai
 
+###delete an article by author
+put http://localhost:4000/author-api/article/Jai/1711000257
+
+
+
+
+
+
+
+
+
+
+
 
 ####################################    USER   ##################################################
 ### get for user
@@ -65,3 +78,8 @@ Content-Type: application/json
     "username": "Jai12",
     "password": "Buvan@13222"
 }
+
+
+###read all articles
+
+get http://localhost:4000/user-api/article

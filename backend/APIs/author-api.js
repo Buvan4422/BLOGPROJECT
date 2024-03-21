@@ -67,12 +67,23 @@ authorapp.post('/article', async (req, res) => {
 
   res.send({ message: 'New Article added' });
 });
-//get metahod to read articles
 
+//get metahod to read articles
 authorapp.get('/article/:username', async (req, res) => {
   let authName = req.params.username;
   let artList = await articlesCollection.find({ username: authName }).toArray();
 
   res.send({ message: 'Articles', payload: artList });
+});
+
+//soft delete or change status of article
+authorapp.put('/article/:username/:articleId', async (req, res) => {
+  let artId = req.params.articleId;
+  let removedArt = await articlesCollection.findOneAndUpdate(
+    { articleId: artId },
+    { $set: { status: false } },
+    { returnDocument: 'after' }
+  );
+  res.send({ message: 'Article removed', payload: removedArt });
 });
 module.exports = authorapp;

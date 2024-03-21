@@ -5,8 +5,10 @@ const jwt = require('jsonwebtoken');
 Userapp.use(express.json());
 
 let userCollection;
+let articlesCollection;
 Userapp.use((req, res, next) => {
   userCollection = req.app.get('userCollection');
+  articlesCollection = req.app.get('articlesCollection');
   next();
 });
 
@@ -54,6 +56,13 @@ Userapp.post('/login', async (req, res) => {
       });
     }
   }
+});
+
+//read all articles
+Userapp.get('/article', async (req, res) => {
+  let artList = await articlesCollection.find({ status: true }).toArray();
+
+  res.send({ message: 'Articles', payload: artList });
 });
 
 module.exports = Userapp;
