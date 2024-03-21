@@ -1,24 +1,50 @@
-
+####################################    AUTHOR   ##################################################
+###get for author
 get http://localhost:4000/author-api/authors
 
-###
+###post for author resgister
 post http://localhost:4000/author-api/register
 Content-Type: application/json
 
 {
     "role":"author",
-    "username":"Buvan",
-    "password":"Buvan@123",
-    "email":"Buv@gmail.com"
+    "username":"Jai12",
+    "password":"Buvan@12",
+    "email":"Buv1@gmail.com"
 }
-
-###
-put http://localhost:4000/author-api/update/Vikas
+### post for author login
+post http://localhost:4000/author-api/login
 Content-Type: application/json
 
 {
     "role":"author",
-    "username": "Jai123",
-    "password": "Jaiiiiiiiiii@12",
-    "email":"vik@gmail.com"
+    "username":"Jai12",
+    "password":"Buvan@12"
+}
+###
+
+####################################    USER   ##################################################
+### get for user
+get http://localhost:4000/user-api/users
+
+### post for user
+
+post http://localhost:4000/user-api/register
+Content-Type: application/json
+
+{
+    "role":"author",
+    "username":"Jai12",
+    "password":"Buvan@13222",
+    "email":"Buv222@gmail.com"
+}
+
+### login for user
+post http://localhost:4000/user-api/login
+Content-Type: application/json
+
+{
+    "role":"author",
+    "username": "Jai12",
+    "password": "Buvan@13222"
 }
