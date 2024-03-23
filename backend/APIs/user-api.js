@@ -51,10 +51,11 @@ Userapp.post('/login', async (req, res) => {
       let singleToken = jwt.sign({ username: userCred.username }, 'abcedf', {
         expiresIn: 500,
       });
+      delete dbUser.password;
       res.send({
         message: 'Login Successful',
         token: singleToken,
-        author: dbUser,
+        user: dbUser,
       });
     }
   }

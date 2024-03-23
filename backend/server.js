@@ -3,11 +3,14 @@ const app = exp();
 const users = require('./APIs/user-api');
 const authors = require('./APIs/author-api');
 const admins = require('./APIs/admin-api');
+const path = require('path');
 
 const port = 4000;
 app.listen(port, console.log(`Server listening at http://localhost:${port}`));
 
 app.use(exp.json());
+
+app.use(exp.static(path.join(__dirname, '../frontend/build')));
 
 const mongoClient = require('mongodb').MongoClient;
 
